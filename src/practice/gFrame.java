@@ -15,6 +15,7 @@ public class gFrame extends JFrame implements ActionListener, ChangeListener, Mo
 	private JButton roll; //the roll button.
 	private JPanel board; //the panel holding the 'wheel' values.
 	private JPanel buttons; //the panel holding the 'lock/unlock/ buttons.
+	private int turn = 0;
 
 	/**
 	 * 
@@ -102,6 +103,7 @@ public class gFrame extends JFrame implements ActionListener, ChangeListener, Mo
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getActionCommand().equals("roll")){
+			if(turn < 3){ //turn over at three rolls
 			for(int i = 0; i < 5; i++){
 				for(int j = 0; j < 5; j++){
 					if(lock[j] == false){ //if [boolean] lock([j]) is not True, execute the RNG for the current value.
@@ -109,6 +111,18 @@ public class gFrame extends JFrame implements ActionListener, ChangeListener, Mo
 						wheels[i][j].setText(random[i][j] + "|"); //set to JLabel([i][j])...
 					}
 				}
+			}
+			turn++;
+			}else{ //refresh values after three rolls
+				for(int i = 0; i < 5; i++){
+					for(int j = 0; j < 5; j++){
+						random[i][j] = (int) (Math.random()*6); //generate value...
+						wheels[i][j].setText(random[i][j] + "|"); //set to JLabel([i][j])...
+						lock[j] = false;
+						locker[i].setBackground((Color) Color.gray); //set button colour to grey to signify that this column is unlocked (formerly locked).
+					}
+				}
+				turn = 0;
 			}
 		}
 		for(int i = 0; i < 5; i++){
